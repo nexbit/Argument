@@ -97,6 +97,20 @@ public class ArgumentTests {
             yield return SimpleDataRow(name => Argument.PositiveNonZero(name, 0));
             yield return SimpleDataRow(name => Argument.PositiveOrZero(name, -1));
             yield return SimpleDataRow(name => Argument.PositiveOrZero(name, int.MinValue));
+
+            yield return SimpleDataRow(name => Argument.NotOutOfRange(name, 0, 1, int.MaxValue));
+            yield return SimpleDataRow(name => Argument.NotOutOfRange(name, 11, int.MinValue, 10));
+            yield return SimpleDataRow(name => Argument.NotOutOfRange(name, Guid.Empty, Guid.NewGuid(), Guid.NewGuid()));
+            yield return SimpleDataRow(name => Argument.NotOutOfRange(name, "", "First", "Last", String.CompareOrdinal));
+
+            yield return SimpleDataRow(name => Argument.NotLess(name, 0, 1));
+            yield return SimpleDataRow(name => Argument.NotLess(name, Guid.Empty, Guid.NewGuid()));
+            yield return SimpleDataRow(name => Argument.NotLess(name, "", "First", String.CompareOrdinal));
+
+            yield return SimpleDataRow(name => Argument.NotGreater(name, 11, 10));
+            yield return SimpleDataRow(name => Argument.NotGreater(name, Guid.NewGuid(), Guid.Empty));
+            yield return SimpleDataRow(name => Argument.NotGreater(name, "Last", "First", String.CompareOrdinal));
+
         }
     }
 
@@ -115,6 +129,11 @@ public class ArgumentTests {
             yield return SuccessDataRow(1,             value => Argument.PositiveOrZero("x", value));
             yield return SuccessDataRow(int.MaxValue,  value => Argument.PositiveOrZero("x", value));
             yield return SuccessDataRow(0,             value => Argument.PositiveOrZero("x", value));
+
+            yield return SuccessDataRow(1, value => Argument.NotOutOfRange("x", value, 0, 10));
+            yield return SuccessDataRow("bbb", value => Argument.NotOutOfRange("x", value, "aaa", "ccc", String.CompareOrdinal));
+            yield return SuccessDataRow(0, value => Argument.NotLess("x", value, 0));
+            yield return SuccessDataRow(100, value => Argument.NotGreater("x", value, 100));
 
         }
     }
