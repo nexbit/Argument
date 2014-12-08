@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Text.RegularExpressions;
 
 // ReSharper disable CheckNamespace
 /// <summary>
@@ -1073,5 +1074,31 @@ public static class Argument {
     }
     #endregion NotGreater
 
+    /// <summary>
+    /// Determines whether the specified argument match with a given pattern.
+    /// </summary>
+    /// <param name="name">Name of the parameter.</param>
+    /// <param name="value">The parameter value.</param>
+    /// <param name="pattern">The regular expression pattern.</param>
+    /// <param name="regexOptions">The regular expression options.</param>
+    /// <returns>
+    /// 	<paramref name="value"/> if it matches the pattern.
+    /// </returns>
+    /// <remarks>
+    /// This method cannot be used with Code Contracts, as it uses the Regex class.</remarks>
+    /// <exception cref="System.ArgumentException">The <paramref name="value" /> is <c>null</c>.</exception>
+    /// <exception cref="System.ArgumentException">The <paramref name="pattern" /> is <c>null</c>.</exception>
+    /// <exception cref="System.ArgumentException">The <paramref name="value" /> doesn't match the <paramref name="pattern" />.</exception>
+    [DebuggerNonUserCode, DebuggerStepThrough]
+    public static string Match(string name, string value, string pattern, RegexOptions regexOptions = RegexOptions.None)
+    {
+        NotNull("value", value);
+        NotNull("pattern", pattern);
+
+        if (!Regex.IsMatch(value, pattern, regexOptions))
+            throw new ArgumentException(string.Format("Argument '{0}' doesn't match with pattern '{1}'", name, pattern), name);
+
+        return value;
+    }
     #endregion
 }

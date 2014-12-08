@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 using Xunit;
 using Xunit.Extensions;
 
@@ -47,7 +48,16 @@ public class ArgumentTests {
         var exception = Assert.Throws<ArgumentOutOfRangeException>(() => validate("x"));
         Assert.Equal("x", exception.ParamName);
     }
-    
+
+    [Theory]
+    [PropertyData("NotMatchVariants")]
+    public void MatchVariant_ThrowsArgumentException_WithCorrectParamName_WhenValueNotMatch(Expression<Action<string>> validateExpression)
+    {
+        var validate = validateExpression.Compile();
+        var exception = Assert.Throws<ArgumentException>(() => validate("x"));
+        Assert.Equal("x", exception.ParamName);
+    }
+  
     [Theory]
     [PropertyData("SuccessVariants")]
     public void AnyVariant_ReturnsArgumentValue_WhenSuccessful<T>(T argument, Expression<Func<T, T>> validateExpression) {
@@ -114,6 +124,14 @@ public class ArgumentTests {
         }
     }
 
+    public static IEnumerable<object[]> NotMatchVariants
+    {
+        get
+        {
+            yield return SimpleDataRow(name => Argument.Match(name, "A123Z", "^a[0-9].z$", RegexOptions.None));
+        }
+    }
+
     public static IEnumerable<object[]> SuccessVariants {
         get {
             yield return SuccessDataRow(new object(),  value => Argument.NotNull("x", value));
@@ -134,6 +152,8 @@ public class ArgumentTests {
             yield return SuccessDataRow("bbb", value => Argument.NotOutOfRange("x", value, "aaa", "ccc", String.CompareOrdinal));
             yield return SuccessDataRow(0, value => Argument.NotLess("x", value, 0));
             yield return SuccessDataRow(100, value => Argument.NotGreater("x", value, 100));
+
+            yield return SuccessDataRow("a123z", value => Argument.Match("x", value, "a[0-9]*z", RegexOptions.IgnoreCase));
 
         }
     }
