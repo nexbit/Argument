@@ -291,7 +291,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static byte NotOutOfRange(string name, byte value, byte minimumValue, byte maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -312,7 +316,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static short NotOutOfRange(string name, short value, short minimumValue, short maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -333,7 +341,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static int NotOutOfRange(string name, int value, int minimumValue, int maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -354,7 +366,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static long NotOutOfRange(string name, long value, long minimumValue, long maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -375,7 +391,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static float NotOutOfRange(string name, float value, float minimumValue, float maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -396,7 +416,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static double NotOutOfRange(string name, double value, double minimumValue, double maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -417,7 +441,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static decimal NotOutOfRange(string name, decimal value, decimal minimumValue, decimal maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -440,7 +468,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static DateTime NotOutOfRange(string name, DateTime value, DateTime minimumValue, DateTime maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -461,7 +493,11 @@ public static class Argument {
     [ContractArgumentValidator]
     public static char NotOutOfRange(string name, char value, char minimumValue, char maximumValue)
     {
-        if (value < minimumValue || value > maximumValue)
+        // Split the checks to help Code Contract's static code analysis
+        if (value < minimumValue)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value > maximumValue)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
@@ -492,8 +528,12 @@ public static class Argument {
     public static T NotOutOfRange<T>(string name, T value, T minimumValue, T maximumValue)
         where T : IComparable<T>
     {
-        if (value.CompareTo(minimumValue) < 0 || value.CompareTo(maximumValue) > 0)
+        // Split the checks to help Code Contract's static code analysis
+        if (value.CompareTo(minimumValue) < 0)
             throw new ArgumentOutOfRangeException(name, 
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (value.CompareTo(maximumValue) > 0)
+            throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
 
@@ -524,7 +564,11 @@ public static class Argument {
     {
         NotNull("comparer", comparer);
 
-        if (comparer(value, minimumValue) < 0 || comparer(value, maximumValue) > 0)
+        // Split the checks to help Code Contract's static code analysis
+        if (comparer(value, minimumValue) < 0)
+            throw new ArgumentOutOfRangeException(name,
+                string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
+        if (comparer(value, maximumValue) > 0)
             throw new ArgumentOutOfRangeException(name,
                 string.Format(NotOutOfRangeError, name, minimumValue, maximumValue));
         Contract.EndContractBlock();
