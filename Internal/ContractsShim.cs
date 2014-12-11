@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-#if !NET45_CONTRACTS
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace System.Diagnostics.Contracts {
     [Conditional("JUST_A_SHIM")]
     internal class ContractArgumentValidatorAttribute : Attribute {}
@@ -15,4 +11,3 @@ namespace System.Diagnostics.Contracts {
         }
     }
 }
-#endif

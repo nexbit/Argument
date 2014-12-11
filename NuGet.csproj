@@ -6,13 +6,18 @@
     <ProjectGuid>{B4234A52-83A2-4FCE-91BD-25F7D9485AC6}</ProjectGuid>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <!-- Tells the Nuget targets to inject the package creation step in the Build process -->
+    <BuildPackage>true</BuildPackage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
+    <!-- The directory where package will be created (always set this to a different path than OutputPath) -->
+    <PackageOutputDir>bin\Debug\nupkg\</PackageOutputDir>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
+    <PackageOutputDir>bin\Release\nupkg\</PackageOutputDir>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
@@ -20,6 +25,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
+    <!-- Overrides the default name and location for the package nuspec file -->
+    <NuSpecFile>$(OutputPath)\Argument.nuspec</NuSpecFile>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="NuGetProjReadme.txt" />
@@ -35,23 +42,27 @@
       <Project>{b21fc6c7-3ff3-4aeb-ae94-f0501e54201e}</Project>
       <Name>Net20</Name>
     </ProjectReference>
-    <ProjectReference Include="Net45.csproj">
-      <Project>{064b8029-b761-43fc-8844-0488e8ef9eec}</Project>
-      <Name>Net45</Name>
-    </ProjectReference>
     <ProjectReference Include="Portable.csproj">
       <Project>{6ff2dd9b-9b77-4642-964d-1ad004ae030f}</Project>
       <Name>Portable</Name>
     </ProjectReference>
+    <ProjectReference Include="SL5.csproj">
+      <Project>{2584edd9-8054-4704-93df-e374af055e7b}</Project>
+      <Name>SL5</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="Build" DependsOnTargets="PrepareForBuild; ResolveReferences; _CopySourceItemsToOutputDirectory; DeleteExternalAnnotations; CreateNuGetPackage">
-  </Target>
+  <PropertyGroup>
+    <BuildDependsOn>
+      PrepareForBuild;
+      ResolveReferences;
+      _CopySourceItemsToOutputDirectory;
+      DeleteExternalAnnotations;
+    </BuildDependsOn>
+  </PropertyGroup>
+  <Import Project="BuildSupport\nuget.targets" />
   <Target Name="DeleteExternalAnnotations">
     <!-- I have no idea what copies it, please feel free to solve -->
     <Delete Files="$(OutDir)Argument.ExternalAnnotations.xml" />
-  </Target>
-  <Target Name="CreateNuGetPackage">
-    <Exec WorkingDirectory="$(OutDir)" Command="nuget pack Argument.nuspec" />
   </Target>
 </Project>

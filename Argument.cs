@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 /// <summary>
 /// Provides methods for verification of argument preconditions.
 /// </summary>
-public static class Argument {
+public static partial class Argument {
 // ReSharper restore CheckNamespace   
     /// <summary>
     /// Verifies that a given argument value is not <c>null</c> and returns the value provided.
